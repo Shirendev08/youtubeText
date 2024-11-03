@@ -62,9 +62,9 @@ const MyForm: React.FC<MyFormProps> = ({ onSubmit }) => {
                       className="text-16 placeholder:text-16 rounded-lg border border-gray-300 text-gray-900 placeholder:text-gray-500"
                     />
                   </FormControl>
-                  <FormDescription>
+                  {/* <FormDescription>
                     This is your public display name.
-                  </FormDescription>
+                  </FormDescription> */}
                   <FormMessage />
                 </FormItem>
               )}
