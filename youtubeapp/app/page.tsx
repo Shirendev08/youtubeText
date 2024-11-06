@@ -1,20 +1,25 @@
 "use client"
-import MyForm from "@/components/MyForm";
-import { login } from '../lib/auth';
+import { useRouter } from "next/navigation";
+import { logout } from "@/lib/auth";
+import { ModeToggle } from "@/components/ModeToggle";
+import { Button } from "@/components/ui/button";
+import { CardDemo } from "@/components/Card";
 export default function Home() {
-  const handleLogin = async (username: string, password: string) => {
-    try {
-        await login(username, password);
-        alert('Login successful');
-    } catch (error) {
-        console.error(error);
-        alert('Login failed');
-    }
-};
+  const router = useRouter();
+
+  const handleLogout = () => {
+    logout(); // Call the logout function
+    router.push("/sign-in"); // Redirect to the sign-in page after logging out
+  };
   return (
    
    <div>
-     <MyForm onSubmit={handleLogin} />;
+      <ModeToggle/>
+     <Button onClick={handleLogout} className="">Logout</Button>
+
+     <div className="">
+        <CardDemo/>
+     </div>
    </div>
   );
 }
