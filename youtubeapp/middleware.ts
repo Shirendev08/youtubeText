@@ -9,6 +9,9 @@ export function middleware(request: NextRequest) {
   if (token && request.nextUrl.pathname === "/sign-in") {
     return NextResponse.redirect(new URL("/", request.url));
   }
+  if (token && request.nextUrl.pathname === "/sign-up") {
+    return NextResponse.redirect(new URL("/", request.url));
+  }
   if (!token && request.nextUrl.pathname === "/") {
     return NextResponse.redirect(new URL("/sign-in", request.url));
   }
@@ -18,5 +21,5 @@ export function middleware(request: NextRequest) {
 
 // Specify the paths to apply this middleware to
 export const config = {
-  matcher: ["/", "/sign-in"],  // Only apply middleware to '/' route
+  matcher: ["/", "/sign-in","/sign-up"],  // Only apply middleware to '/' route
 };
