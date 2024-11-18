@@ -37,6 +37,7 @@ export function CardDemo({ className }: { className?: string }) {
         setConversionHistory(sortedData);
       } catch (err) {
         setError("Failed to load history.");
+        console.log(err)
       } finally {
         setLoading(false);
       }
@@ -49,16 +50,37 @@ export function CardDemo({ className }: { className?: string }) {
   const getThumbnailUrl = (videoUrl: string) => {
     const videoId = videoUrl.split("v=")[1]?.split("&")[0] || videoUrl.split("/").pop();
     const thumb = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
-    return thumb
+    return thumb;
+  };
+
+  // TruncatedText component for "See More" functionality
+  const TruncatedText = ({ text }: { text: string }) => {
+    const [isExpanded, setIsExpanded] = useState(false);
+    const maxCharacters = 100; // Set the maximum number of characters to display initially
+
+    const toggleExpanded = () => {
+      setIsExpanded(!isExpanded);
+    };
+
+    return (
+      <p className="text-sm text-muted-foreground">
+        {isExpanded ? text : `${text.slice(0, maxCharacters)}...`}
+        {text.length > maxCharacters && (
+          <button onClick={toggleExpanded} className="text-blue-500 ml-2">
+            {isExpanded ? "See Less" : "See More"}
+          </button>
+        )}
+      </p>
+    );
   };
 
   if (loading) return <p>Loading history...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
 
   return (
-    <div className="space-y-4 justify-items-center">
+    <div className="space-y-4 justify-items-center flex flex-row">
       {conversionHistory.map((item, index) => (
-        <Card key={index} className={cn("w-[400px]", className)}>
+        <Card key={index} className={cn("w-[30%] mt-4 mr-10", className)}>
           <CardHeader>
             <CardTitle>Conversion History</CardTitle>
             <CardDescription>
@@ -67,7 +89,7 @@ export function CardDemo({ className }: { className?: string }) {
           </CardHeader>
           <CardContent className="grid gap-4">
             <div className="flex items-center space-x-4 rounded-md border p-4">
-                <VideoIcon/>
+              <VideoIcon />
               <div className="flex-1 space-y-1">
                 <p className="text-sm font-medium leading-none">Video URL:</p>
                 <p className="text-sm text-muted-foreground">
@@ -78,7 +100,7 @@ export function CardDemo({ className }: { className?: string }) {
               </div>
             </div>
             <div className="space-y-1">
-            <Image
+              <Image
                 src={getThumbnailUrl(item.video_url)}
                 alt="Video Thumbnail"
                 objectFit="cover"
@@ -88,9 +110,7 @@ export function CardDemo({ className }: { className?: string }) {
               <p className="text-sm font-medium leading-none">
                 Converted Text:
               </p>
-              <p className="text-sm text-muted-foreground">
-                {item.converted_text}
-              </p>
+              <TruncatedText text={item.converted_text} />
             </div>
           </CardContent>
           <CardFooter>

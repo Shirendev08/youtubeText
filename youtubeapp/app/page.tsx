@@ -14,8 +14,11 @@ export default function Home() {
   return (
    
    <div>
+    <div className="flex flex-col">
+
       <ModeToggle/>
-     <Button onClick={handleLogout} className="">Logout</Button>
+     <Button onClick={handleLogout} className="mt-10 ">Logout</Button>
+    </div>
 
      <div className="">
         <CardDemo/>
