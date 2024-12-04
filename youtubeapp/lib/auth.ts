@@ -1,3 +1,4 @@
+import { error } from "console";
 import Cookies from "js-cookie";
 
 export async function login(username: string, password: string) {
@@ -16,6 +17,29 @@ export async function login(username: string, password: string) {
     return data;
   } else {
     throw new Error("Login failed");
+  }
+}
+export async function convert(videoUrl:string){
+  const token = Cookies.get("accessToken");
+
+  if (!token) {
+    throw new Error("User is not authenticated");
+  }
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/convert-video/`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ videoUrl }), // Make sure the structure here is what the backend expects
+  });
+  
+  if (res.ok) {
+    const data = await res.json();
+    return data.converted_text;
+  } else {
+    const errorText = await res.text(); // Get more details from the response if it's an error
+    throw new Error(`Failed to convert video: ${errorText}`);
   }
 }
 
