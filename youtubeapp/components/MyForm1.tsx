@@ -1,4 +1,4 @@
-// components/MyForm.tsx
+// components/MyForm1.tsx
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import Image from "next/image";
 import Link from "next/link";
+import { register } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -17,7 +18,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
-import { login } from "@/lib/auth";  // Import the login function
 
 // Define schema for validation
 const formSchema = z.object({
@@ -29,23 +29,24 @@ const formSchema = z.object({
   }),
 });
 
-const MyForm: React.FC = () => {
+const MyForm1: React.FC = () => {
   const router = useRouter();
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       username: "",
+      email: "",
       password: "",
     },
   });
 
-  const handleSubmit = async (data: { username: string; password: string }) => {
+  const handleSubmit = async (data: { username: string; email: string; password: string }) => {
     try {
       // Use the login function from auth.ts
-      await login(data.username, data.password);
+      await register(data.username, data.email, data.password);
 
       // Redirect to the home page on successful login
-      router.push("/");
+      router.push("/sign-in");
     } catch (error) {
       console.error("Error during login:", error);
     }
@@ -57,7 +58,7 @@ const MyForm: React.FC = () => {
         <header className="header flex flex-col  justify-start gap-5 md:gap-8 ">
           <Link href="/" className="cursor-pointer flex items-center gap-1">
             <Image src="/five.jpg" width={34} height={34} alt="logo" />
-            <h1 className="text-26 font-ibm-plex-serif font-bold text-black-1">Sign In</h1>
+            <h1 className="text-26 font-ibm-plex-serif font-bold text-black-1">Sign Up</h1>
           </Link>
         </header>
         <div className="w-full flex flex-col gap-5">
@@ -72,6 +73,23 @@ const MyForm: React.FC = () => {
                     <FormControl>
                       <Input
                         placeholder="Enter your username"
+                        {...field}
+                        className="text-16 placeholder:text-16 rounded-lg border border-gray-300 placeholder:text-gray-500"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="username"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-14 font-medium">Email</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Enter your email"
                         {...field}
                         className="text-16 placeholder:text-16 rounded-lg border border-gray-300 placeholder:text-gray-500"
                       />
@@ -105,18 +123,18 @@ const MyForm: React.FC = () => {
               </Button>
             </form>
           </Form>
-          <footer className="flex justify-center gap-1">
+          {/* <footer className="flex justify-center gap-1">
             <p className="text-14 font-normal text-gray-600">
-               Don&apos;t have an account?  
+               Alreadt have an account?  
             </p>
-            <Link href='/sign-up' className="form-link">
-              Sign Up
+            <Link href='/sign-in' className="form-link">
+              Sign In
             </Link>
-          </footer>
+          </footer> */}
         </div>
       </div>
     </section>
   );
 };
 
-export default MyForm;
+export default MyForm1;

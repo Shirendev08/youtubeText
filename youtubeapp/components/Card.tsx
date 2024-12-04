@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { BellRing, Check, VideoIcon } from "lucide-react";
+import { VideoIcon, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { history } from "@/lib/auth";
@@ -24,6 +24,7 @@ export function CardDemo({ className }: { className?: string }) {
   const [conversionHistory, setConversionHistory] = useState<HistoryItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [selectedText, setSelectedText] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchHistory = async () => {
@@ -37,7 +38,7 @@ export function CardDemo({ className }: { className?: string }) {
         setConversionHistory(sortedData);
       } catch (err) {
         setError("Failed to load history.");
-        console.log(err)
+        console.error(err);
       } finally {
         setLoading(false);
       }
@@ -46,28 +47,23 @@ export function CardDemo({ className }: { className?: string }) {
     fetchHistory();
   }, []);
 
-  // Function to get a YouTube thumbnail based on the video URL
   const getThumbnailUrl = (videoUrl: string) => {
     const videoId = videoUrl.split("v=")[1]?.split("&")[0] || videoUrl.split("/").pop();
-    const thumb = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
-    return thumb;
+    return `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
   };
 
-  // TruncatedText component for "See More" functionality
   const TruncatedText = ({ text }: { text: string }) => {
-    const [isExpanded, setIsExpanded] = useState(false);
     const maxCharacters = 100; // Set the maximum number of characters to display initially
-
-    const toggleExpanded = () => {
-      setIsExpanded(!isExpanded);
-    };
 
     return (
       <p className="text-sm text-muted-foreground">
-        {isExpanded ? text : `${text.slice(0, maxCharacters)}...`}
+        {text.length > maxCharacters ? `${text.slice(0, maxCharacters)}...` : text}
         {text.length > maxCharacters && (
-          <button onClick={toggleExpanded} className="text-blue-500 ml-2">
-            {isExpanded ? "See Less" : "See More"}
+          <button
+            onClick={() => setSelectedText(text)}
+            className="text-blue-500 ml-2"
+          >
+            See More
           </button>
         )}
       </p>
@@ -107,9 +103,7 @@ export function CardDemo({ className }: { className?: string }) {
                 width={300}
                 height={150}
               />
-              <p className="text-sm font-medium leading-none">
-                Converted Text:
-              </p>
+              <p className="text-sm font-medium leading-none">Converted Text:</p>
               <TruncatedText text={item.converted_text} />
             </div>
           </CardContent>
@@ -120,6 +114,21 @@ export function CardDemo({ className }: { className?: string }) {
           </CardFooter>
         </Card>
       ))}
+
+      {selectedText && (
+        <div className="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center z-50">
+          <div className=" rounded-lg p-6 mx-10 w-full">
+            <h2 className="text-lg font-bold mb-4">Full Converted Text</h2>
+            <p className="mb-6">{selectedText}</p>
+            <Button
+              onClick={() => setSelectedText(null)}
+              className="w-full text-white hover:bg-red-600"
+            >
+              Close
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

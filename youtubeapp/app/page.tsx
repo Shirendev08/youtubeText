@@ -4,6 +4,7 @@ import { logout } from "@/lib/auth";
 import { ModeToggle } from "@/components/ModeToggle";
 import { Button } from "@/components/ui/button";
 import { CardDemo } from "@/components/Card";
+import { Create } from "@/components/Create";
 export default function Home() {
   const router = useRouter();
 
@@ -15,12 +16,13 @@ export default function Home() {
    
    <div>
     <div className="flex flex-col">
-
       <ModeToggle/>
-     <Button onClick={handleLogout} className="mt-10 ">Logout</Button>
-    </div>
+      <Create/>
 
-     <div className="">
+    </div>
+     <Button onClick={handleLogout} className="mt-10 ">Logout</Button>
+
+     <div className="overflow-x-auto ">
         <CardDemo/>
      </div>
    </div>

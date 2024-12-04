@@ -1,4 +1,3 @@
-import { error } from "console";
 import Cookies from "js-cookie";
 
 export async function login(username: string, password: string) {
@@ -19,6 +18,21 @@ export async function login(username: string, password: string) {
     throw new Error("Login failed");
   }
 }
+export async function register(username: string, email: string, password: string) {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/register/`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ username,email,password }),
+  });
+
+  if (res.ok) {
+    const data = await res.json();
+    // Store tokens in cookies
+    return data;
+  } else {
+    throw new Error("register failed");
+  }
+}
 export async function convert(videoUrl:string){
   const token = Cookies.get("accessToken");
 
@@ -31,7 +45,7 @@ export async function convert(videoUrl:string){
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify({ videoUrl }), // Make sure the structure here is what the backend expects
+    body: JSON.stringify({ video_url: videoUrl }), // Make sure the structure here is what the backend expects
   });
   
   if (res.ok) {
