@@ -76,7 +76,7 @@ export function CardDemo({ className }: { className?: string }) {
   return (
     <div className="space-y-4 justify-items-center flex flex-row">
       {conversionHistory.map((item, index) => (
-        <Card key={index} className={cn("w-[30%] mt-4 mr-10", className)}>
+        <Card key={index} className={cn(" mt-4 mr-10 w-full sm:w-1/2 lg:w-1/3 mt-4", className)}>
           <CardHeader>
             <CardTitle>Conversion History</CardTitle>
             <CardDescription>
@@ -116,7 +116,7 @@ export function CardDemo({ className }: { className?: string }) {
       ))}
 
       {selectedText && (
-        <div className="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center z-50">
+        <div className="fixed inset-0 bg-black bg-opacity-100 flex justify-center items-center z-50">
           <div className=" rounded-lg p-6 mx-10 w-full">
             <h2 className="text-lg font-bold mb-4">Full Converted Text</h2>
             <p className="mb-6">{selectedText}</p>

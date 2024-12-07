@@ -6,6 +6,7 @@ import { z } from "zod"
 import { convert } from "@/lib/auth"
 import { Button } from "@/components/ui/button"
 import { useRouter } from "next/navigation"
+import { history } from "@/lib/auth"
 import {
   Form,
   FormControl,
@@ -36,7 +37,7 @@ export function Create() {
       async function onSubmit(values: { video_url: string }) {
         try {
             await convert(values.video_url); // Call the `convert` function here
-          router.refresh()
+             await history();
         } catch (error) {
           alert(`Error: ${error}`); // Handle errors (e.g., show an error message)
         }
@@ -45,7 +46,7 @@ export function Create() {
 
   return (
     <Form {...form}>
-    <form onSubmit={form.handleSubmit(onSubmit)} className="flex items-center gap-4">
+    <form onSubmit={form.handleSubmit(onSubmit)} className="flex items-center gap-4 mt-5">
       <FormField
         control={form.control}
         name="video_url"

@@ -1,5 +1,5 @@
-import Cookies from "js-cookie";
 
+import Cookies from "js-cookie";
 export async function login(username: string, password: string) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login/`, {
     method: "POST",
@@ -35,7 +35,6 @@ export async function register(username: string, email: string, password: string
 }
 export async function convert(videoUrl:string){
   const token = Cookies.get("accessToken");
-
   if (!token) {
     throw new Error("User is not authenticated");
   }
@@ -58,7 +57,7 @@ export async function convert(videoUrl:string){
 }
 
 
-export function logout() {
+export async function logout() {
     Cookies.remove("accessToken");
     Cookies.remove("refreshToken");
   }

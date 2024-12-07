@@ -14,7 +14,7 @@ export function ModeToggle() {
   };
 
   return (
-    <div className="flex items-center space-x-2">
+    <div className="flex items-center space-x-2 mt-5 mb-10">
       <Switch id="airplane-mode" onClick={toggleTheme}/>
       <Label htmlFor="airplane-mode">Change Theme</Label>
     </div>

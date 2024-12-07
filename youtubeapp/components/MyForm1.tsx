@@ -24,6 +24,10 @@ const formSchema = z.object({
   username: z.string().min(2, {
     message: "Username must be at least 2 characters.",
   }),
+  email: z.string().min(2, {
+    message: "Username must be at least 2 characters.",
+  }),
+  
   password: z.string().min(1, {
     message: "Password must be at least 6 characters.",
   }),
@@ -83,7 +87,7 @@ const MyForm1: React.FC = () => {
               />
               <FormField
                 control={form.control}
-                name="username"
+                name="email"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-14 font-medium">Email</FormLabel>
@@ -123,14 +127,14 @@ const MyForm1: React.FC = () => {
               </Button>
             </form>
           </Form>
-          {/* <footer className="flex justify-center gap-1">
+          <footer className="flex justify-center gap-1">
             <p className="text-14 font-normal text-gray-600">
-               Alreadt have an account?  
+               Already have an account?  
             </p>
             <Link href='/sign-in' className="form-link">
               Sign In
             </Link>
-          </footer> */}
+          </footer>
         </div>
       </div>
     </section>

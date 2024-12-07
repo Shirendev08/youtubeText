@@ -1,6 +1,6 @@
 "use client"
 import React from 'react'
-import MyForm1 from '@/components/MyForm'
+import MyForm1 from '@/components/MyForm1'
 import { ModeToggle } from '@/components/ModeToggle';
 const page = () => {
   
